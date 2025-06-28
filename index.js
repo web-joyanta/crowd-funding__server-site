@@ -74,7 +74,13 @@ async function run() {
             };
             const result = await campaignsCollection.updateOne(query, updateDoc, options);
             res.send(result);
-        })
+        });
+        app.delete("/campaigns/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await campaignsCollection.deleteOne(query);
+            res.send(result);
+        });
 
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
