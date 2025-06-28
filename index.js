@@ -56,6 +56,24 @@ async function run() {
             const newDonate = req.body;
             const result = await donatedCollection.insertOne(newDonate);
             res.send(result);
+        });
+        app.put("/campaigns/:id", async (req, res) => {
+            const id = req.params.id;
+            const updatedCampaign = req.body;
+            const query = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    photo: updatedCampaign.photo,
+                    title: updatedCampaign.title,
+                    campaignType: updatedCampaign.campaignType,
+                    date: updatedCampaign.date,
+                    amount: updatedCampaign.amount,
+                    description: updatedCampaign.description,
+                },
+            };
+            const result = await campaignsCollection.updateOne(query, updateDoc, options);
+            res.send(result);
         })
 
         // Connect the client to the server	(optional starting in v4.7)
